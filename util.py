@@ -14,7 +14,8 @@ month_map = {
     "STU": 11, "PRO": 12
 }
 
-def extract_transactions_from_image(image_path):
+# 📥 OCR + Regex Parser Function
+def extract_transactions_from_image(image_path, year=2025):
     image = cv2.imread(image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -32,7 +33,7 @@ def extract_transactions_from_image(image_path):
             day, month_abbr = date_match.groups()
             day = int(day)
             month = month_map.get(month_abbr.upper(), 4)  # default to April
-            current_date = datetime(2025, month, day).strftime('%Y-%m-%d')
+            current_date = datetime(year, month, day).strftime('%Y-%m-%d')
         elif "EUR" in line:
             amount_match = re.search(r'([-+]?\d+,\d+)\s*EUR', line)
             if amount_match and i > 0:
