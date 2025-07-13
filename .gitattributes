@@ -1,2 +1,4 @@
+# *.ipynb filter=strip-notebook-output  
+
 *.ipynb filter=nbstripout
 *.ipynb diff=nbstripout
