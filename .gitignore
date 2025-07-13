@@ -1,0 +1,8 @@
+venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Sensitive data files
+data/sensitive
