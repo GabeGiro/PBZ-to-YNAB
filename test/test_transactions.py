@@ -31,11 +31,11 @@ class TestUtilFunctions(unittest.TestCase):
         self.assertEqual(cropped.shape[1], 800) 
 
     @patch('cv2.imread')
-    def test_crop_dates_should_reduce_width_by_70_percent(self, mock_imread):
+    def test_crop_dates_should_reduce_width_by_80_percent(self, mock_imread):
         mock_imread.return_value = self.original_image
         image = mock_imread.return_value
         cropped = transactions.get_cropped_dates_image(image)
-        self.assertEqual(cropped.shape[1], 300) 
+        self.assertEqual(cropped.shape[1], 200) 
 
 if __name__ == '__main__':
     unittest.main()
