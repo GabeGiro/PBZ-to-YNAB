@@ -9,7 +9,8 @@ from src.data.image import ImageData
 
 
 def extract_transactions_from_image(image_path, year = constants.default_year):
-    raw_text = extract_text_from_image(image_path)
+    image = cv2.imread(image_path)
+    raw_text = extract_text_from_image(image)
     lines = get_lines_after_total(raw_text)
     data = []
     current_date = ""
@@ -64,10 +65,15 @@ def get_cropped_transactions_image(image):
     return crop_util.extract_right_part_of_image(image, percentage=0.8)
 
 
-def extract_text_from_image(image_path):
-    image = cv2.imread(image_path)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+def count_number_of_dates(dates_image):
+    raw_text = extract_text_from_image(dates_image)
+    date_pattern = constants.DATE_REGEX
+    dates = re.findall(date_pattern, raw_text)
+    return len(dates)
 
+
+def extract_text_from_image(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     raw_text = pytesseract.image_to_string(gray)
     return raw_text.strip()
 
