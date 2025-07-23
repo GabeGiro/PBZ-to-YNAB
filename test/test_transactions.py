@@ -13,29 +13,29 @@ class TestUtilFunctions(unittest.TestCase):
         mock_imread.return_value = self.original_image
         result = transactions.get_cropped_dates_and_transactions_images("test_image.png")
         self.assertIsInstance(result, ImageData)
-        self.assertEqual(result.dates_image.shape, (800, 300, 3))
-        self.assertEqual(result.transactions_image.shape, (800, 700, 3))
+        self.assertEqual(result.dates_image.shape, (700, 200, 3))
+        self.assertEqual(result.transactions_image.shape, (700, 800, 3))
 
     @patch('cv2.imread')
-    def test_crop_transactions_with_dates_should_reduce_height_by_20_percent(self, mock_imread):
+    def test_crop_transactions_with_dates_should_reduce_height_by_30_percent(self, mock_imread):
         mock_imread.return_value = self.original_image
         image = mock_imread.return_value
         cropped = transactions.crop_transactions_and_dates(image)
-        self.assertEqual(cropped.shape[0], 800) 
+        self.assertEqual(cropped.shape[0], 700) 
 
     @patch('cv2.imread')
-    def test_crop_transactions_should_reduce_width_by_30_percent(self, mock_imread):
+    def test_crop_transactions_should_reduce_width_by_20_percent(self, mock_imread):
         mock_imread.return_value = self.original_image
         image = mock_imread.return_value
         cropped = transactions.get_cropped_transactions_image(image)
-        self.assertEqual(cropped.shape[1], 700) 
+        self.assertEqual(cropped.shape[1], 800) 
 
     @patch('cv2.imread')
-    def test_crop_dates_should_reduce_width_by_70_percent(self, mock_imread):
+    def test_crop_dates_should_reduce_width_by_80_percent(self, mock_imread):
         mock_imread.return_value = self.original_image
         image = mock_imread.return_value
         cropped = transactions.get_cropped_dates_image(image)
-        self.assertEqual(cropped.shape[1], 300) 
+        self.assertEqual(cropped.shape[1], 200) 
 
 if __name__ == '__main__':
     unittest.main()

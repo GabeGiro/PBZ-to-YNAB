@@ -53,15 +53,15 @@ def get_cropped_dates_and_transactions_images(image_path):
 
 
 def crop_transactions_and_dates(image):
-    return crop_util.extract_bottom_part_of_image(image, percentage=0.8)
+    return crop_util.extract_bottom_part_of_image(image, percentage=0.7)
 
 
 def get_cropped_dates_image(image):
-    return crop_util.extract_left_part_of_image(image, percentage=0.3)
+    return crop_util.extract_left_part_of_image(image, percentage=0.2)
 
 
 def get_cropped_transactions_image(image):
-    return crop_util.extract_right_part_of_image(image, percentage=0.7)
+    return crop_util.extract_right_part_of_image(image, percentage=0.8)
 
 
 def extract_text_from_image(image_path):
