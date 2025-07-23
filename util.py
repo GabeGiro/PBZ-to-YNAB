@@ -7,6 +7,8 @@ import constants
 
 
 def extract_transactions_from_image(image_path, year = constants.default_year):
+    image = cv2.imread(image_path)
+    transactions_image = crop_bellow_total()
     raw_text = extract_text_from_image(image_path)
     lines = get_lines_after_total(raw_text)
     data = []
@@ -34,6 +36,37 @@ def extract_transactions_from_image(image_path, year = constants.default_year):
                     pass
 
     return pd.DataFrame(data)
+
+
+def get_transactions_and_dates_images(image_path):
+    image = cv2.imread(image_path)
+    transactions_image = crop_transactions(image)
+    dates_image = crop_dates(image)
+    transactions_with_dates_image = crop_transactions_with_dates(image)
+
+    return {
+        'transactions': transactions_image,
+        'dates': dates_image,
+        'transactions_with_dates': transactions_with_dates_image
+    }
+
+
+def crop_transactions_with_dates(image):
+    height, width = image.shape[:2]
+    crop_height = int(height * 0.8)  
+    return image[:height - crop_height, :]
+
+
+def crop_dates(image):
+    height, width = image.shape[:2]
+    crop_width = int(width * 0.2)  
+    return image[:, crop_width:]
+
+
+def crop_transactions(image):
+    height, width = image.shape[:2]
+    crop_width = int(width * 0.2)  
+    return image[:, :width - crop_width]
 
 
 def extract_text_from_image(image_path):
