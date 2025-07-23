@@ -8,5 +8,6 @@ month_map = {
     "SRP": 7, "KOL": 8, "RUJ": 9, "LIS": 10, "STU": 11, "PRO": 12
 }
 
+total_match = "Ukupan iznos"
 default_year = 2025
 default_month = 4  

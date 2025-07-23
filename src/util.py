@@ -36,11 +36,11 @@ def extract_transactions_from_image(image_path, year = constants.default_year):
     return pd.DataFrame(data)
 
 
-def get_transactions_and_dates_images(image_path):
+def get_cropped_dates_and_transactions_images(image_path):
     image = cv2.imread(image_path)
-    transactions_image = crop_transactions(image)
-    dates_image = crop_dates(image)
-    transactions_with_dates_image = crop_transactions_with_dates(image)
+    transactions_image = get_cropped_transactions_image(image)
+    dates_image = get_cropped_dates_image(image)
+    transactions_with_dates_image = crop_transactions_and_dates(image)
 
     return {
         'transactions': transactions_image,
@@ -49,21 +49,21 @@ def get_transactions_and_dates_images(image_path):
     }
 
 
-def crop_transactions_with_dates(image):
+def crop_transactions_and_dates(image):
     height, width = image.shape[:2]
     crop_height = int(height * 0.8)  
-    return image[:height - crop_height, :]
+    return image[:crop_height, :]
 
 
-def crop_dates(image):
+def get_cropped_dates_image(image):
     height, width = image.shape[:2]
-    crop_width = int(width * 0.2)  
+    crop_width = int(width * 0.3)  
     return image[:, crop_width:]
 
 
-def crop_transactions(image):
+def get_cropped_transactions_image(image):
     height, width = image.shape[:2]
-    crop_width = int(width * 0.2)  
+    crop_width = int(width * 0.7)  
     return image[:, :width - crop_width]
 
 
@@ -77,7 +77,7 @@ def extract_text_from_image(image_path):
 
 def get_lines_after_total(raw_text):
     lines = raw_text.split("\n")
-    total_index = next((i for i, line in enumerate(lines) if "Ukupan iznos" in line), None)
+    total_index = next((i for i, line in enumerate(lines) if constants.total_match in line), None)
     
     if total_index is not None:
         return lines[total_index + 2:]
