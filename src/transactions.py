@@ -4,6 +4,7 @@ import pandas as pd
 import re
 from datetime import datetime
 import src.constants as constants
+import src.util.crop as crop_util
 
 
 def extract_transactions_from_image(image_path, year = constants.default_year):
@@ -50,21 +51,15 @@ def get_cropped_dates_and_transactions_images(image_path):
 
 
 def crop_transactions_and_dates(image):
-    height, width = image.shape[:2]
-    crop_height = int(height * 0.8)  
-    return image[:crop_height, :]
+    return crop_util.get_bottom_part_of_image(image, crop_percentage=0.8)
 
 
 def get_cropped_dates_image(image):
-    height, width = image.shape[:2]
-    crop_width = int(width * 0.3)  
-    return image[:, crop_width:]
+    return crop_util.get_left_part_of_image(image, crop_percentage=0.3)
 
 
 def get_cropped_transactions_image(image):
-    height, width = image.shape[:2]
-    crop_width = int(width * 0.7)  
-    return image[:, :width - crop_width]
+    return crop_util.get_right_part_of_image(image, crop_percentage=0.7)
 
 
 def extract_text_from_image(image_path):
