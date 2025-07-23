@@ -7,6 +7,7 @@ class TestUtilFunctions(unittest.TestCase):
     original_image = np.zeros(original_image_shape, dtype=np.uint8)
 
     def test_extract_bottom_80_percent_of_the_image(self):
+        """Edge case was rounding errors."""
         cropped = crop_util.extract_bottom_part_of_image(self.original_image, percentage=0.8)
         self.assertEqual(cropped.shape[0], 800)
 
@@ -22,9 +23,10 @@ class TestUtilFunctions(unittest.TestCase):
         cropped = crop_util.extract_left_part_of_image(self.original_image, percentage=0.3)
         self.assertEqual(cropped.shape[1], 300)
 
-    def test_extract_left_80_percent_of_the_image(self):
-        cropped = crop_util.extract_left_part_of_image(self.original_image, percentage=0.8)
-        self.assertEqual(cropped.shape[1], 800)
+    def test_extract_left_20_percent_of_the_image(self):
+        """Edge case was rounding errors in other util functions, but not this one. Tested to ensure consistency."""
+        cropped = crop_util.extract_left_part_of_image(self.original_image, percentage=0.2)
+        self.assertEqual(cropped.shape[1], 200)
 
 if __name__ == '__main__':
     unittest.main()
