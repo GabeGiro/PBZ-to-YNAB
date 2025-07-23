@@ -3,12 +3,10 @@ import pytesseract
 import pandas as pd
 import re
 from datetime import datetime
-import constants
+import src.constants as constants
 
 
 def extract_transactions_from_image(image_path, year = constants.default_year):
-    image = cv2.imread(image_path)
-    transactions_image = crop_bellow_total()
     raw_text = extract_text_from_image(image_path)
     lines = get_lines_after_total(raw_text)
     data = []

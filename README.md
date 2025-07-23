@@ -1,6 +1,9 @@
 # PBZ-to-YNAB
 
-## Instal virtual environment
+
+## Project Setup
+
+### Instal virtual environment
 
 Recommended python version: 3.12
 
@@ -10,7 +13,7 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
 ```
 
-## Ignore Jupyter Notebook output
+### Ignore Jupyter Notebook output
 To ignore the output of Jupyter Notebooks use the following steps:
 
 1. Install `nbstripout`:
@@ -21,3 +24,10 @@ To ignore the output of Jupyter Notebooks use the following steps:
    ```bash
    nbstripout --install
    ```
+
+### Run Tests
+To run the tests, use the following command:
+
+```bash
+python -m unittest test.test_util
+```
