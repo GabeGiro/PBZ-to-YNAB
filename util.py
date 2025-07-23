@@ -6,12 +6,9 @@ from datetime import datetime
 import constants
 
 
-# 📥 OCR + Regex Parser Function
 def extract_transactions_from_image(image_path, year = constants.default_year):
     raw_text = extract_text_from_image(image_path)
-
-    # Parse lines
-    lines = raw_text.split("\n")
+    lines = get_lines_after_total(raw_text)
     data = []
     current_date = ""
 
@@ -43,14 +40,16 @@ def extract_text_from_image(image_path):
     image = cv2.imread(image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # OCR extraction
     raw_text = pytesseract.image_to_string(gray)
     return raw_text.strip()
 
 
-def get_lines_without_total(raw_text):
+def get_lines_after_total(raw_text):
     lines = raw_text.split("\n")
-    # remove first line
-    if lines and lines[0].strip():
-        lines = lines[1:]
-    return lines
+    total_index = next((i for i, line in enumerate(lines) if "Ukupan iznos" in line), None)
+    
+    if total_index is not None:
+        return lines[total_index + 2:]
+    return []
+
+
