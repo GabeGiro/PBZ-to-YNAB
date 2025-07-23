@@ -12,7 +12,7 @@ class TestUtilFunctions(unittest.TestCase):
     def test_get_transactions_and_dates_images(self, mock_imread):
         mock_imread.return_value = self.original_image
         result = transactions.get_cropped_dates_and_transactions_images("test_image.png")
-        # self.assertIsInstance(result, ImageData)
+        self.assertIsInstance(result, ImageData)
         self.assertEqual(result.dates_image.shape, (800, 300, 3))
         self.assertEqual(result.transactions_image.shape, (800, 700, 3))
 
