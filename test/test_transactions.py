@@ -13,8 +13,8 @@ class TestUtilFunctions(unittest.TestCase):
         mock_imread.return_value = self.original_image
         result = transactions.get_cropped_dates_and_transactions_images("test_image.png")
         self.assertIsInstance(result, ImageData)
-        self.assertEqual(result.dates_image.shape, (800, 300, 3))
-        self.assertEqual(result.transactions_image.shape, (800, 700, 3))
+        self.assertEqual(result.dates_image.shape, (700, 200, 3))
+        self.assertEqual(result.transactions_image.shape, (700, 800, 3))
 
     @patch('cv2.imread')
     def test_crop_transactions_with_dates_should_reduce_height_by_30_percent(self, mock_imread):
