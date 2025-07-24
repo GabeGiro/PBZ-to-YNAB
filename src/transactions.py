@@ -121,9 +121,9 @@ def get_list_of_descriptions(transactions_image):
     lines = raw_text.split("\n")
     descriptions = []
 
-    for line in lines:
-        if "EUR" in line:
-            description = line.split("EUR")[0].strip()
+    for i, line in enumerate(lines):
+        if "EUR" in line and i > 0:
+            description = lines[i - 1].strip()
             if description:
                 descriptions.append(description)
 
