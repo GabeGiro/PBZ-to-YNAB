@@ -65,10 +65,27 @@ def get_cropped_transactions_image(image):
     return crop_util.extract_right_part_of_image(image, percentage=0.8)
 
 
-def count_number_of_dates(dates_image):
+def get_list_of_dates(dates_image):
     raw_text = extract_text_from_image(dates_image)
     date_pattern = constants.DATE_REGEX
     dates = re.findall(date_pattern, raw_text)
+    return dates
+
+
+def get_list_of_formatted_dates(dates_image):
+    dates = get_list_of_dates(dates_image)
+    formatted_dates = []
+
+    for day, month_abbr in dates:
+        month = constants.month_map.get(month_abbr.upper(), constants.default_month)
+        formatted_date = datetime(constants.default_year, month, int(day)).strftime(constants.OUTPUT_DATE_FORMAT)
+        formatted_dates.append(formatted_date)
+
+    return formatted_dates
+
+
+def count_number_of_dates(dates_image):
+    dates = get_list_of_dates(dates_image)
     return len(dates)
 
 

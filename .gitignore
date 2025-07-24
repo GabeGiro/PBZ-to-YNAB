@@ -7,3 +7,5 @@ __pycache__/
 
 # Sensitive data files
 data/sensitive
+
+*.DS_Store
