@@ -12,8 +12,8 @@ from src.data.transaction import Transaction
 def extract_transactions_from_image(image_path, year=constants.default_year):
     cropped_images = get_cropped_dates_and_transactions_images(image_path)
     if not is_number_of_rows_matching(cropped_images.dates_image, cropped_images.transactions_image):
-        raise ValueError("The number of dates, amounts, and descriptions do not match. Please check the input image.")
-    
+        raise ValueError(f'The number of dates, amounts, and descriptions do not match. Please check the input image. Image: \033[91m{image_path}\033[0m')
+
     transactions = get_list_of_transactions(
         dates_image=cropped_images.dates_image,
         transactions_image=cropped_images.transactions_image,
