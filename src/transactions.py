@@ -6,6 +6,7 @@ from datetime import datetime
 import src.constants as constants
 import src.util.crop as crop_util
 from src.data.image import ImageData
+from src.data.transaction import Transaction
 
 
 def extract_transactions_from_image(image_path, year = constants.default_year):
@@ -87,6 +88,87 @@ def get_list_of_formatted_dates(dates_image):
 def count_number_of_dates(dates_image):
     dates = get_list_of_dates(dates_image)
     return len(dates)
+
+
+def get_list_of_amounts(transactions_image):
+    raw_text = extract_text_from_image(transactions_image)
+    transaction_pattern = constants.AMOUNT_REGEX
+    transactions = re.findall(transaction_pattern, raw_text)
+    return transactions
+
+
+def get_list_of_formatted_amounts(transactions_image):
+    transactions = get_list_of_amounts(transactions_image)
+    formatted_transactions = []
+
+    for amount in transactions:
+        amount = amount.replace(',', '.')
+        try:
+            formatted_transactions.append(float(amount))
+        except ValueError:
+            continue
+
+    return formatted_transactions
+
+
+def count_number_of_amounts(transactions_image):
+    transactions = get_list_of_amounts(transactions_image)
+    return len(transactions)
+
+
+def get_list_of_descriptions(transactions_image):
+    raw_text = extract_text_from_image(transactions_image)
+    lines = raw_text.split("\n")
+    descriptions = []
+
+    for line in lines:
+        if "EUR" in line:
+            description = line.split("EUR")[0].strip()
+            if description:
+                descriptions.append(description)
+
+    return descriptions
+
+
+def get_list_of_formatted_descriptions(transactions_image):
+    descriptions = get_list_of_descriptions(transactions_image)
+    formatted_descriptions = []
+
+    for description in descriptions:
+        if description:
+            formatted_descriptions.append(description)
+
+    return formatted_descriptions
+
+
+def count_number_of_descriptions(transactions_image):
+    descriptions = get_list_of_descriptions(transactions_image)
+    return len(descriptions)
+
+
+def get_list_of_transactions(dates_image, transactions_image):
+    dates = get_list_of_formatted_dates(dates_image)
+    amounts = get_list_of_formatted_amounts(transactions_image)
+    descriptions = get_list_of_formatted_descriptions(transactions_image)
+
+    transactions = []
+    for date, amount, description in zip(dates, amounts, descriptions):
+        transactions.append(
+            Transaction(
+                date=date, 
+                amount=amount, 
+                description=description
+            )
+        )
+
+    return transactions
+
+
+def is_number_of_rows_matching(dates_image, transactions_image):
+    number_of_dates = count_number_of_dates(dates_image)
+    number_of_transactions = count_number_of_amounts(transactions_image)
+    number_of_descriptions = count_number_of_descriptions(transactions_image)
+    return number_of_dates == number_of_transactions == number_of_descriptions
 
 
 def extract_text_from_image(image):
