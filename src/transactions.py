@@ -120,12 +120,15 @@ def get_list_of_descriptions(transactions_image):
     raw_text = extract_text_from_image(transactions_image)
     lines = raw_text.split("\n")
     descriptions = []
+    current_description = ""
 
-    for i, line in enumerate(lines):
-        if "EUR" in line and i > 0:
-            description = lines[i - 1].strip()
-            if description:
-                descriptions.append(description)
+    for line in lines:
+        if "EUR" in line:
+            if current_description.strip():
+                descriptions.append(current_description.strip())
+            current_description = ""  # Reset for the next description
+        else:
+            current_description += f" {line.strip()}"
 
     return descriptions
 
