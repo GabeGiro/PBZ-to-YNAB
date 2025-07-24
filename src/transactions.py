@@ -73,6 +73,40 @@ def count_number_of_dates(dates_image):
     return len(dates)
 
 
+def get_list_of_descriptions(transactions_image):
+    raw_text = extract_text_from_image(transactions_image)
+    lines = raw_text.split("\n")
+    descriptions = []
+    current_description = ""
+
+    for line in lines:
+        # Check if the line contains a valid amount pattern with "EUR"
+        if re.search(constants.AMOUNT_REGEX, line):
+            if current_description.strip():
+                descriptions.append(current_description.strip())
+            current_description = ""  # Reset for the next description
+        else:
+            current_description += f" {line.strip()}"
+
+    return descriptions
+
+
+def get_list_of_formatted_descriptions(transactions_image):
+    descriptions = get_list_of_descriptions(transactions_image)
+    formatted_descriptions = []
+
+    for description in descriptions:
+        if description:
+            formatted_descriptions.append(description)
+
+    return formatted_descriptions
+
+
+def count_number_of_descriptions(transactions_image):
+    descriptions = get_list_of_descriptions(transactions_image)
+    return len(descriptions)
+
+
 def get_list_of_amounts(transactions_image):
     raw_text = extract_text_from_image(transactions_image)
     transaction_pattern = constants.AMOUNT_REGEX
@@ -97,39 +131,6 @@ def get_list_of_formatted_amounts(transactions_image):
 def count_number_of_amounts(transactions_image):
     transactions = get_list_of_amounts(transactions_image)
     return len(transactions)
-
-
-def get_list_of_descriptions(transactions_image):
-    raw_text = extract_text_from_image(transactions_image)
-    lines = raw_text.split("\n")
-    descriptions = []
-    current_description = ""
-
-    for line in lines:
-        if "EUR" in line:
-            if current_description.strip():
-                descriptions.append(current_description.strip())
-            current_description = ""  # Reset for the next description
-        else:
-            current_description += f" {line.strip()}"
-
-    return descriptions
-
-
-def get_list_of_formatted_descriptions(transactions_image):
-    descriptions = get_list_of_descriptions(transactions_image)
-    formatted_descriptions = []
-
-    for description in descriptions:
-        if description:
-            formatted_descriptions.append(description)
-
-    return formatted_descriptions
-
-
-def count_number_of_descriptions(transactions_image):
-    descriptions = get_list_of_descriptions(transactions_image)
-    return len(descriptions)
 
 
 def get_list_of_transactions(dates_image, transactions_image, year):
