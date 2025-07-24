@@ -9,35 +9,18 @@ from src.data.image import ImageData
 from src.data.transaction import Transaction
 
 
-def extract_transactions_from_image(image_path, year = constants.default_year):
-    image = cv2.imread(image_path)
-    raw_text = extract_text_from_image(image)
-    lines = get_lines_after_total(raw_text)
-    data = []
-    current_date = ""
+def extract_transactions_from_image(image_path, year=constants.default_year):
+    cropped_images = get_cropped_dates_and_transactions_images(image_path)
+    if not is_number_of_rows_matching(cropped_images.dates_image, cropped_images.transactions_image):
+        raise ValueError("The number of dates, amounts, and descriptions do not match. Please check the input image.")
+    
+    transactions = get_list_of_transactions(
+        dates_image=cropped_images.dates_image,
+        transactions_image=cropped_images.transactions_image,
+        year=year
+    )
 
-    for i, line in enumerate(lines):
-        date_match = re.match(constants.DATE_REGEX, line.strip())
-        if date_match:
-            day, month_abbr = date_match.groups()
-            day = int(day)
-            month = constants.month_map.get(month_abbr.upper(), constants.default_month)
-            current_date = datetime(year, month, day).strftime(constants.OUTPUT_DATE_FORMAT)
-        elif "EUR" in line:
-            amount_match = re.search(constants.AMOUNT_REGEX, line)
-            if amount_match and i > 0:
-                amount = amount_match.group(1).replace(',', '.')
-                try:
-                    prev_line = lines[i - 1].strip()
-                    data.append({
-                        'Date': current_date,
-                        'Description': prev_line,
-                        'Amount (EUR)': float(amount)
-                    })
-                except:
-                    pass
-
-    return pd.DataFrame(data)
+    return pd.DataFrame(transactions)
 
 
 def get_cropped_dates_and_transactions_images(image_path):
@@ -73,13 +56,13 @@ def get_list_of_dates(dates_image):
     return dates
 
 
-def get_list_of_formatted_dates(dates_image):
+def get_list_of_formatted_dates(dates_image, year):
     dates = get_list_of_dates(dates_image)
     formatted_dates = []
 
     for day, month_abbr in dates:
         month = constants.month_map.get(month_abbr.upper(), constants.default_month)
-        formatted_date = datetime(constants.default_year, month, int(day)).strftime(constants.OUTPUT_DATE_FORMAT)
+        formatted_date = datetime(year, month, int(day)).strftime(constants.OUTPUT_DATE_FORMAT)
         formatted_dates.append(formatted_date)
 
     return formatted_dates
@@ -149,8 +132,8 @@ def count_number_of_descriptions(transactions_image):
     return len(descriptions)
 
 
-def get_list_of_transactions(dates_image, transactions_image):
-    dates = get_list_of_formatted_dates(dates_image)
+def get_list_of_transactions(dates_image, transactions_image, year):
+    dates = get_list_of_formatted_dates(dates_image, year)
     amounts = get_list_of_formatted_amounts(transactions_image)
     descriptions = get_list_of_formatted_descriptions(transactions_image)
 
@@ -178,14 +161,4 @@ def extract_text_from_image(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     raw_text = pytesseract.image_to_string(gray)
     return raw_text.strip()
-
-
-def get_lines_after_total(raw_text):
-    lines = raw_text.split("\n")
-    total_index = next((i for i, line in enumerate(lines) if constants.total_match in line), None)
-    
-    if total_index is not None:
-        return lines[total_index + 2:]
-    return []
-
 
