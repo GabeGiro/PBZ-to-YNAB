@@ -12,11 +12,11 @@ class TestCountingFunctions(unittest.TestCase):
     @patch('src.transactions.count_number_of_dates')
     @patch('src.transactions.count_number_of_descriptions')
     @patch('src.transactions.count_number_of_amounts')
-    def test_counting_rows_matches(self, mock_count_number_of_amounts, mock_count_number_of_descriptions, mock_count_number_of_dates):
+    def test_counting_rows_matches(self, mock_count_number_of_dates, mock_count_number_of_descriptions, mock_count_number_of_amounts):
         # Setup
-        mock_count_number_of_amounts.return_value = 5
-        mock_count_number_of_descriptions.return_value = 5
         mock_count_number_of_dates.return_value = 5
+        mock_count_number_of_descriptions.return_value = 5
+        mock_count_number_of_amounts.return_value = 5
 
         #When
 
@@ -24,3 +24,44 @@ class TestCountingFunctions(unittest.TestCase):
         self.assertTrue(is_number_of_rows_matching(dates_image=self.dates_image, transactions_image=self.transactions_image))
 
     
+    @patch('src.transactions.count_number_of_dates')
+    @patch('src.transactions.count_number_of_descriptions')
+    @patch('src.transactions.count_number_of_amounts')
+    def test_number_of_dates_does_not_match(self, mock_count_number_of_dates, mock_count_number_of_descriptions, mock_count_number_of_amounts):
+        # Setup
+        mock_count_number_of_dates.return_value = 4
+        mock_count_number_of_descriptions.return_value = 5
+        mock_count_number_of_amounts.return_value = 5
+
+        # When
+
+        # Then
+        self.assertFalse(is_number_of_rows_matching(dates_image=self.dates_image, transactions_image=self.transactions_image))
+
+    @patch('src.transactions.count_number_of_dates')
+    @patch('src.transactions.count_number_of_descriptions')
+    @patch('src.transactions.count_number_of_amounts')
+    def test_number_of_descriptions_does_not_match(self, mock_count_number_of_dates, mock_count_number_of_descriptions, mock_count_number_of_amounts):
+        # Setup
+        mock_count_number_of_dates.return_value = 5
+        mock_count_number_of_descriptions.return_value = 4
+        mock_count_number_of_amounts.return_value = 5
+
+        # When
+
+        # Then
+        self.assertFalse(is_number_of_rows_matching(dates_image=self.dates_image, transactions_image=self.transactions_image))
+
+    @patch('src.transactions.count_number_of_dates')
+    @patch('src.transactions.count_number_of_descriptions')
+    @patch('src.transactions.count_number_of_amounts')
+    def test_number_of_amounts_does_not_match(self, mock_count_number_of_dates, mock_count_number_of_descriptions, mock_count_number_of_amounts):
+        # Setup
+        mock_count_number_of_dates.return_value = 5
+        mock_count_number_of_descriptions.return_value = 5
+        mock_count_number_of_amounts.return_value = 4
+
+        # When
+
+        # Then
+        self.assertFalse(is_number_of_rows_matching(dates_image=self.dates_image, transactions_image=self.transactions_image))
