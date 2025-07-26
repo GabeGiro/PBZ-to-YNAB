@@ -50,7 +50,7 @@ def get_cropped_transactions_image(image):
 
 
 def get_list_of_dates(dates_image):
-    raw_text = extract_text_from_image(dates_image)
+    raw_text = extract_text_from_image_with_config_for_dates(dates_image)
     date_pattern = constants.DATE_REGEX
     dates = re.findall(date_pattern, raw_text)
     return dates
@@ -161,5 +161,12 @@ def is_number_of_rows_matching(dates_image, transactions_image):
 def extract_text_from_image(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     raw_text = pytesseract.image_to_string(gray)
+    return raw_text.strip()
+
+
+def extract_text_from_image_with_config_for_dates(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    config = "--psm 6 -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZČŽŠčžš"
+    raw_text = pytesseract.image_to_string(gray, config=config)
     return raw_text.strip()
 
