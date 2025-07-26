@@ -166,7 +166,7 @@ def extract_text_from_image(image):
 
 def extract_text_from_image_with_config_for_dates(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    config = "--psm 6 -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZČŽŠčžš"
+    config = "--psm 6 -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZČŽŠ"
     raw_text = pytesseract.image_to_string(gray, config=config)
     return raw_text.strip()
 
