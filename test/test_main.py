@@ -3,11 +3,11 @@ import pandas as pd
 from src.main import extract_transactions_from_images_in_directory, save_transactions_to_csv
 
 
-def test_process_images_in_directory(tmpdir):
+def test_process_images_in_directory(temporary_directory):
     """
     Test the process_images_in_directory function with sample images.
     """
-    input_dir = tmpdir.mkdir("images")
+    input_dir = temporary_directory.mkdir("images")
     sample_image_path = input_dir.join("sample.png")
     sample_image_path.write("dummy image content")
 
@@ -28,9 +28,6 @@ def test_process_images_in_directory(tmpdir):
 
 
 def test_save_transactions_to_csv(tmpdir):
-    """
-    Test the save_transactions_to_csv function.
-    """
     dataframe = pd.DataFrame({"Date": ["2025-07-26"], "Description": ["Test"], "Amount (EUR)": [10.0]})
 
     output_file = tmpdir.join("transactions.csv")
@@ -44,9 +41,6 @@ def test_save_transactions_to_csv(tmpdir):
 
 
 def test_process_images_with_different_extensions(tmpdir):
-    """
-    Test that both .PNG and .png files are processed.
-    """
     input_dir = tmpdir.mkdir("images")
 
     png_image_path = input_dir.join("sample.png")
