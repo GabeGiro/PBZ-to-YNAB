@@ -11,7 +11,12 @@ def extract_transactions_from_images_in_directory(input_dir: str) -> pd.DataFram
             df = extract_transactions_from_image(file_path)
             all_data.append(df)
 
-    return pd.concat(all_data, ignore_index=True)
+    combined_df = pd.concat(all_data, ignore_index=True)
+
+    if "date" in combined_df.columns:
+        combined_df = combined_df.sort_values(by="date")
+
+    return combined_df
 
 
 def save_transactions_to_csv(dataframe: pd.DataFrame, output_file: str) -> None:
