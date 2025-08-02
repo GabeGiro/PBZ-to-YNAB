@@ -31,3 +31,21 @@ To run the tests, use the following command:
 ```bash
 python -m unittest test.test_util
 ```
+
+## Flow of converting PBZ screenshots of transactions to csv format
+
+1. **Screenshot**: Take screenshots of the PBZ MyWay app showing the transactions.
+2. **Upload**: Upload the screenshots to the data/sensitive/run directory.
+   - Ensure the images are in PNG format and named appropriately.
+3. **Screenshot to CSV Conversion**: To convert the screenshots to CSV format, run the OCR transaction extractor:
+   ```bash
+   python -m src.main
+   ```
+   - This will process the images and extract transaction data to a CSV file.
+4. **Check Output**: The output CSV file will be saved in the data/sensitive/run directory.
+   - The file will be named `transactions.csv` by default.
+4. **Review**: Review the extracted data for accuracy. Check 01 and 11 dates and ensure that the transactions are correctly formatted.
+   - If there are any issues, you may need to adjust the image or the extraction logic.
+5. **CSV to YNAB Conversion**: Upload the CSV file to https://aniav.github.io/ynab-csv/
+   - Follow the instructions on the website to convert the CSV file to a format compatible with YNAB.
+6. **Import to YNAB**: Import the converted CSV file into your YNAB account.
