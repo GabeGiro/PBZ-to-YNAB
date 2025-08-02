@@ -4,7 +4,7 @@ OUTPUT_DATE_FORMAT = '%Y-%m-%d'
 ISOLATED_I_REGEX = r'\bI\b' 
 ISOLATED_I_REPLACEMENT = '11'
 ZERO_AMOUNT_REGEX = r'\b000,00\b'
-ZERO_AMOUNT_REPLACEMENT = '+1.000,00'
+ZERO_AMOUNT_REPLACEMENT = '+1000,00'
 
 # Month mapping for Croatian
 month_map = {
