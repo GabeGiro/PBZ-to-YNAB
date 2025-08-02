@@ -164,8 +164,8 @@ def extract_text_from_image(image):
     return raw_text.strip()
 
 
-def correct_ocr_errors(raw_text):
-    corrected_text = raw_text.replace("I", "11")
+def correct_reading_date_11_ocr_error(raw_text):
+    corrected_text = re.sub(constants.ISOLATED_I_REGEX, '11', raw_text) 
     return corrected_text
 
 
@@ -173,6 +173,6 @@ def extract_text_from_image_with_config_for_dates(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     config = "--psm 6 -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZČŽŠ"
     raw_text = pytesseract.image_to_string(gray, config=config)
-    corrected_text = correct_ocr_errors(raw_text)
+    corrected_text = correct_reading_date_11_ocr_error(raw_text)
     return corrected_text.strip()
 
