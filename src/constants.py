@@ -2,6 +2,9 @@ DATE_REGEX = r'(\d{1,2})\s+([A-ZČŽŠ]{3})'
 AMOUNT_REGEX = r'([-+]?\d+,\d+)\s*EUR'
 OUTPUT_DATE_FORMAT = '%Y-%m-%d'
 ISOLATED_I_REGEX = r'\bI\b' 
+ISOLATED_I_REPLACEMENT = '11'
+ZERO_AMOUNT_REGEX = r'\b000,00\b'
+ZERO_AMOUNT_REPLACEMENT = '+1.000,00'
 
 # Month mapping for Croatian
 month_map = {

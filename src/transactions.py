@@ -111,7 +111,8 @@ def get_list_of_amounts(transactions_image):
     raw_text = extract_text_from_image(transactions_image)
     transaction_pattern = constants.AMOUNT_REGEX
     transactions = re.findall(transaction_pattern, raw_text)
-    return transactions
+    corrected_transactions = [correct_amount_ocr_errors(amount) for amount in transactions]
+    return corrected_transactions
 
 
 def get_list_of_formatted_amounts(transactions_image):
@@ -164,8 +165,13 @@ def extract_text_from_image(image):
     return raw_text.strip()
 
 
+def correct_amount_ocr_errors(raw_text):
+    corrected_text = re.sub(constants.ZERO_AMOUNT_REGEX, constants.ZERO_AMOUNT_REPLACEMENT, raw_text)
+    return corrected_text
+
+
 def correct_reading_date_11_ocr_error(raw_text):
-    corrected_text = re.sub(constants.ISOLATED_I_REGEX, '11', raw_text) 
+    corrected_text = re.sub(constants.ISOLATED_I_REGEX, constants.ISOLATED_I_REPLACEMENT, raw_text)
     return corrected_text
 
 
@@ -175,4 +181,3 @@ def extract_text_from_image_with_config_for_dates(image):
     raw_text = pytesseract.image_to_string(gray, config=config)
     corrected_text = correct_reading_date_11_ocr_error(raw_text)
     return corrected_text.strip()
-
