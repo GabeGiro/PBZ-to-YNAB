@@ -32,6 +32,12 @@ To run the tests, use the following command:
 python -m unittest test.test_util
 ```
 
+### Open Jupyter Notebooks
+To open Jupyter Notebooks, use the following command:
+```bash
+jupyter notebook
+```
+
 ## Flow of converting PBZ screenshots of transactions to csv format
 
 1. **Screenshot**: Take screenshots of the PBZ MyWay app showing the transactions.
