@@ -1,5 +1,7 @@
 # PBZ-to-YNAB
 
+NOTE: At this point, don't fix the errors, rather cut them out of the screenshots and manually add the missing transactions.
+
 
 ## Project Setup
 
