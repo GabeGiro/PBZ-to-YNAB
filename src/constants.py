@@ -5,6 +5,10 @@ ISOLATED_I_REGEX = r'\bI\b'
 ISOLATED_I_REPLACEMENT = '11'
 ZERO_AMOUNT_REGEX = r'\b000,00\b'
 ZERO_AMOUNT_REPLACEMENT = '+1000,00'
+TIL_MINUS_REGEX = r'(?<=-)[Tt][1IilL][1IilL](?=,)'
+TIL_PLUS_REGEX = r'(?<=\+)[Tt][1IilL][1IilL](?=,)'
+TIL_ISOLATED_REGEX = r'\b[Tt][1IilL][1IilL](?=,)'
+TIL_REPLACEMENT = '11'
 
 # Month mapping for Croatian
 month_map = {

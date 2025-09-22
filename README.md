@@ -32,6 +32,11 @@ To run the tests, use the following command:
 python -m unittest test.test_util
 ```
 
+To run all tests, use:
+```bash
+python -m unittest discover 
+```
+
 ### Open Jupyter Notebooks
 To open Jupyter Notebooks, use the following command:
 ```bash

@@ -166,7 +166,21 @@ def extract_text_from_image(image):
 
 
 def correct_amount_ocr_errors(raw_text):
+    corrected_text = raw_text
+    corrected_text = correct_zero_amount_ocr_errors(corrected_text)
+    return corrected_text
+
+
+def correct_zero_amount_ocr_errors(raw_text):
     corrected_text = re.sub(constants.ZERO_AMOUNT_REGEX, constants.ZERO_AMOUNT_REPLACEMENT, raw_text)
+    return corrected_text
+
+# Currently unused, but keeping it for potential future OCR error corrections
+def correct_til_ocr_errors(raw_text):
+    corrected_text = raw_text
+    corrected_text = re.sub(constants.TIL_MINUS_REGEX, constants.TIL_REPLACEMENT, corrected_text)
+    corrected_text = re.sub(constants.TIL_PLUS_REGEX, constants.TIL_REPLACEMENT, corrected_text)
+    corrected_text = re.sub(constants.TIL_ISOLATED_REGEX, constants.TIL_REPLACEMENT, corrected_text)
     return corrected_text
 
 
