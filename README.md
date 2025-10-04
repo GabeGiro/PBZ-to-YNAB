@@ -27,6 +27,12 @@ To ignore the output of Jupyter Notebooks use the following steps:
    nbstripout --install
    ```
 
+### Install Teserract 
+
+```bash
+brew install tesseract
+```
+
 ### Run Tests
 To run the tests, use the following command:
 
